@@ -15,7 +15,7 @@ def get_overall_mesh():
     model.load_state_dict(torch.load("model.pth", map_location=device))
     model.set_new_device(device)
     #model = Model(device)
-    target = build_dataset('dfaust', ['train']).get(1)
+    target = build_dataset('dfaust', ['train']).get(6000) #6000
     sampled_surface = target[1][0]
     plt.scatter(sampled_surface[:,0], sampled_surface[:,1], s=1)
     plt.savefig("surface_sample_plot.png")

@@ -38,6 +38,7 @@ class Model_overall(nn.Module):
         inputpoint = gs.fx_sample_sphere(Batch, 2 * 60 ** 2 - 2 * 60 + 2, self.n_primitive, randperm=False) * sphere_radius
         inputpoint = inputpoint[:,torch.randperm(inputpoint.shape[1]),:,:]
         inputpoint = inputpoint[:,:self.n_points,:,:]
+        #inputpoint = gs.fx_sample_sphere(Batch, 2 * 11 ** 2 - 2 * 11 + 2, self.n_primitive, randperm=False) * sphere_radius
         inputpoint = inputpoint.to(self.device)
 
         points_primitives = self.INN(Cm, inputpoint)
@@ -53,6 +54,10 @@ class Model_overall(nn.Module):
         g_m_surface = y_surface.pow(2).sum(-1).pow(0.5) - sphere_radius
         G_surface = g_m_surface.min(-1)[0]
         gradient_G_surface = torch.autograd.grad(G_surface.sum(), points_surface, retain_graph=True, create_graph=True)[0]
+
+        assert(points_primitives.requires_grad)
+        assert(g_m_volume.requires_grad)
+        assert(gradient_G_surface.requires_grad)
 
         return [points_primitives, g_m_volume, gradient_G_surface]
 

@@ -41,6 +41,7 @@ class Invertible_Neural_Network(nn.Module):
         for i in range(self.n_layer):
             y = (self.layers)[i](Cm, y, 0)
         #print("before normalization and transform ", y[0,0,0,:])
+        #print((nn.functional.elu(self.normalize_layer(Cm)) + 1)[:, None].shape)
         if (self.normalize):
             y = y / ((nn.functional.elu(self.normalize_layer(Cm)) + 1)[:, None])
         if (self.explicit_affine):
@@ -49,7 +50,8 @@ class Invertible_Neural_Network(nn.Module):
             rot_quart_norm = rot_quart / torch.sqrt(torch.sum(torch.square(rot_quart), dim=-1, keepdim=True))
             rot_matx = quaternion_to_matrix(rot_quart_norm)
             trans_matx = torch.unsqueeze(self.translation_layer(Cm), dim=1).expand(-1, x.shape[1], -1, -1)
-            u = torch.unsqueeze(rot_matx, dim=1).expand(-1, x.shape[1], -1, -1, -1)
+            u = torch.unsqueeze(rot_matx, dim=1)#.expand(-1, x.shape[1], -1, -1, -1)
+            #print(u.shape)
             y = torch.matmul(y.unsqueeze(-2), u).squeeze(-2) + trans_matx
         return y
     
@@ -60,8 +62,9 @@ class Invertible_Neural_Network(nn.Module):
             rot_quart_norm = rot_quart / torch.sqrt(torch.sum(torch.square(rot_quart), dim=-1, keepdim=True))
             rot_matx = quaternion_to_matrix(rot_quart_norm)
             trans_matx = torch.unsqueeze(self.translation_layer(Cm), dim=1).expand(-1, x.shape[1], -1, -1)
+            #print(self.translation_layer(Cm).shape)
             u = (y - trans_matx)
-            v = torch.unsqueeze(rot_matx, dim=1).expand(-1, x.shape[1], -1, -1, -1).transpose(-2, -1)
+            v = torch.unsqueeze(rot_matx, dim=1)#.expand(-1, x.shape[1], -1, -1, -1).transpose(-2, -1)
             y = torch.matmul(u.unsqueeze(-2), v).squeeze(-2) 
         
         if (self.normalize):

@@ -12,4 +12,4 @@ def metric_chamferL1(prediction, target, sum_metric):
 
     min_dist = dist.min(3)[0].min(1)[0].mean() + dist.min(2)[0].mean() # batch
 
-    sum_metric[1] += min_dist.mean().item()
+    sum_metric[1] += min_dist.item()

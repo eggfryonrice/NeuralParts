@@ -3,7 +3,7 @@ import torch.nn as nn
 from torchvision import models
 
 #feature extractor
-class FeatureExtractor(torch.nn.Module):
+class FeatureExtractor(nn.Module):
     def __init__(self, n_feature, n_primitive):
         # feature encoder
         super().__init__() 
@@ -20,7 +20,7 @@ class FeatureExtractor(torch.nn.Module):
     
     def forward(self, x):
         F = self.fe(x)
-        
+        #print(self.p)
         F = torch.unsqueeze(F, 1)
         F = F.expand(-1, self.n_primitive, -1) # should have size 4 * 5 * 256
         

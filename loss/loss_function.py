@@ -14,6 +14,8 @@ def loss_function(prediction, target, sum_loss):
                 loss_overlapping, loss_coverage]
     losses = []
     for w, f in zip(loss_weight, functions):
+        if (w==0):
+            continue
         losses.append(w * f(prediction, target, sum_loss))
     return sum(losses)
 

@@ -38,7 +38,7 @@ def main():
                 optimizer.zero_grad()
         print("epoch %d, batch: %d, losses: %.5f, %.5f, %.5f, %.5f, %.5f, iou: %.5f, chamferL1: %.5f \r" % (epoch+1, b+1, sum_loss[0]/(b+1), sum_loss[1]/(b+1), sum_loss[2]/(b+1), sum_loss[3]/(b+1), sum_loss[4]/(b+1), sum_metric[0]/(b+1), sum_metric[1]/(b+1)))
         torch.save(model.state_dict(), "model.pth")
-        if (epoch+1) % 5 == 0:
+        if (epoch+1) % 10 == 0:
             print("--------------validation--------------\n")
             sum_loss = [0.,0.,0.,0.,0.]
             sum_metric = [0.,0.]

@@ -11,8 +11,15 @@ def loss_occupancy(prediction, target, sum_loss):
 
     G = g_m.min(-1)[0] # batch * N
     p_classification = -1 * G / temperature
-    BCELoss = torch.nn.BCEWithLogitsLoss(weight = t_w, reduction="mean")
-    loss = BCELoss(p_classification, t_labels)
+    # BCELoss = torch.nn.BCEWithLogitsLoss(weight = t_w, reduction="mean")
+    # loss = BCELoss(p_classification, t_labels)
+
+    loss = torch.nn.functional.binary_cross_entropy_with_logits(
+        p_classification, t_labels, reduction="none"
+    )
+    loss = t_w * loss
+    loss = loss.mean()
+
     sum_loss[1] += loss.item()
     assert(loss.requires_grad)
     return loss

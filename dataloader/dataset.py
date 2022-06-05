@@ -27,7 +27,7 @@ class MyDataset(Dataset):
         image = self.datainfo[index].get_image().unsqueeze(0)
         surface_samples = self.datainfo[index].get_surface_samples().unsqueeze(0)
         volume_samples = self.datainfo[index].get_volume_samples().unsqueeze(0)
-        return [image, surface_samples, volume_samples]
+        return [image, surface_samples, volume_samples], self.datainfo[index].path_to_mesh_file()
 
 
 
