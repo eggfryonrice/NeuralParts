@@ -44,8 +44,7 @@ then $G(\mathbf{x}) < 0$ means that the point $\mathbf{x}$ is in the inside of a
 ## Loss and metric
 
 &nbsp;&nbsp;The loss of our network is defined as a weighted sum of five loss functions, as follows.
-$$ L  = w_{rec}L_{rec} + w_{occ}L_{occ} + w_{norm}L_{norm} \\
-  + w_{overlap}L_{overlap} + w_{cover}L_{cover} $$
+$$ L  = w_{rec}L_{rec} + w_{occ}L_{occ} + w_{norm}L_{norm} + w_{overlap}L_{overlap} + w_{cover}L_{cover} $$
 The model takes points randomly sampled from a sphere during training, giving surface points of predicted primitives as an output.
 $L_{rec}$ is called reconstruction loss, and it is bidirectional Chamfer loss between surface samples and the output point.
 
